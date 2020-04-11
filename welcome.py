@@ -30,6 +30,7 @@ def add_country():
         return render_template("welcome.html")
         
 
+
 @app.route('/country/<int:index>')
 def view_country(index):
     try:
