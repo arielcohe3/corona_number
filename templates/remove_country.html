@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>    
+<head>
+<title>welcome page</title>
+<h2>welcome please insret value</h2>
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+ <body>
+     <h1>Remove country</h1>
+      country:{{country.country}}
+      patients:{{country.patients}}
+
+      <h2>Are you sure?</h2>
+      <form action="post">
+          <button type="submit">yes</button>
+          <a href="{{url_for('welcome')}}">no</a>
+      </form>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>    
+<head>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          margin-left:1cm;
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+    </style>
+<title>welcome page</title><br>
+<h2>All infected countries </h2><br>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+ <body>
+    <table>
+            <tr>
+            <th>Country</th>
+            <th>Number of new patients</th>
+            <th>total</th>
+            </tr>
+        <ul>
+            {%for country in countries%}
+                <tr>
+                    <a href="{{url_for('view_country' , index=loop.index0)}}">
+                    <td>{{country.country}}</td>
+                    <td>{{country.patients}}</td>
+                    <td>{{country.total}}</td>
+                    </a>
+                </tr>
+            {% endfor %}
+        </ul>
+    </table>   
+</body>
+</html>
