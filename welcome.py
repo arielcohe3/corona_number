@@ -1,5 +1,9 @@
 from flask import (Flask,render_template,abort,jsonify,request,redirect,url_for)
 import model
+import importall
+import requests as req
+import json
+import lxml.html
 
 app =Flask(__name__)
 
@@ -34,8 +38,9 @@ def add_country():
 @app.route('/country/<int:index>')
 def view_country(index):
     try:
+        # allcountries=importall.rb
         country=model.db[index]
-        return render_template("country.html",country=country)
+        return render_template("country.html",country=country,allcountries=importall.rb)
     except IndexError:
      abort(404)
     
@@ -54,12 +59,51 @@ def view_country_api(index):
     except IndexError:
         abort(404)
 
+@app.route('/elie', methods=["GET"])
+def return_json():
+    x = req.get('https://jsonplaceholder.typicode.com/albums')
+    y = json.loads(x.content)
+    # y = model.returnjson(str(x))    
+    return jsonify(y)
 
-# @app.route('/remove_country/<int:index>', methods=["GET","POST"])
-# def remove(index):
-#     if request.method == "POST":
-#       del db[index]
-#       save_db()
-#       return redirect(url_for('welcome.html'))
-#     else:
-#       return render_template("remove_country.html",country=db[index])
+list = []
+dict_to_send_json = {}
+@app.route('/getall', methods=["GET"])
+def getall():
+    global dict_to_send_json
+    global list
+    global i
+    response = req.get('https://www.worldometers.info/coronavirus/')
+    content = str(response.content)
+    html = lxml.html.fromstring(content)
+    table = html.get_element_by_id("main_table_countries_today")
+    trs = table.xpath("//tr")
+    ths = table.xpath(".//th")
+    for th in ths : 
+            list.append(f"{th.text_content()}")
+    for tr in trs : 
+        # ths = tr.xpath(".//th")
+        tds = tr.xpath(".//td")
+        for td in tds:
+            zero_counter()
+            key=list[i]
+            dict_to_send_json[key] = td.text_content()
+            print(dict_to_send_json)
+            i += 1         
+            convert_dict_to_json()
+    return jsonify({"ss":"ff"})
+    
+i=0
+def zero_counter():
+    global i
+    if(i==13):
+        i = 0
+    # print(list[i])
+    
+
+def convert_dict_to_json():
+    global dict_to_send_json
+    if i==13:
+        importall.rb.append(dict_to_send_json)
+        importall.from_html_to_json(importall.rb)
+        dict_to_send_json={}

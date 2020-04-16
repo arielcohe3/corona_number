@@ -1,8 +1,18 @@
 import json
+import ast
 
 def load_db():
     with open("country.json") as f:
         return json.load(f)
+
+def load_2():
+    with open("alldetails.json") as d:
+        return json.load(d)
+
+
+def from_html_to_json(list):
+    with open("alldetails.json", "w") as json_file:
+        json.dump(list, json_file)
 
 def save_db(data):
     with open("country.json", "w") as write_file:
@@ -38,7 +48,12 @@ def number_of_curent_patients(country):
         for sub in data:
             if sub['country'] == country:
                 return int(sub['patients'])
-                
+
+def returnjson(text):
+    print(type(text))
+    res = json.loads(text)
+    return(res)
+
 def check_if_alredy_exist(country):
     print(country)
     with open("country.json","r") as data_flie:
@@ -53,3 +68,4 @@ def check_if_alredy_exist(country):
             return 0      
 
 db = load_db()
+rb = load_2()
